@@ -163,6 +163,7 @@
 #include "transformations/rt_info/fused_names_attribute.hpp"
 #include "transformations/rt_info/keep_const_precision.hpp"
 #include "transformations/smart_reshape/matmul_sr.hpp"
+#include "openvino/pass/visualize_tree.hpp"
 
 namespace {
 template<typename T>
@@ -1021,6 +1022,8 @@ void TransformationsPipeline::apply(std::shared_ptr<ov::Model> func) {
         }
         manager.run_passes(func);
     }
+    ov::serialize(func, "xytest.xml");
+    ov::pass::VisualizeTree("xytest.svg").run_on_model(func);
 }
 }  // namespace intel_gpu
 }  // namespace ov
