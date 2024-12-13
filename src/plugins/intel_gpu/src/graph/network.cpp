@@ -751,12 +751,21 @@ void network::execute_impl(const std::vector<event::ptr>& events) {
             inst->add_dep_events(events);
         }
 
+        auto prim_id = inst->id();
+        std::cout << "Executing primitive ID: " << prim_id << std::endl;
+
+        auto start_time = std::chrono::high_resolution_clock::now();      
+
         inst->prepare_primitive();
         inst->execute();
 
         executed_prims++;
         if (needs_flushing && executed_prims % flush_frequency == 0)
             get_stream().flush();
+
+        auto end_time = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> exec_time = end_time - start_time;
+        std::cout << "Primitive ID: " << prim_id << " executed in " << exec_time.count() << " ms" << std::endl;
     }
 
     // Using output of previous network as input to another one may cause hazard (in OOOQ mode) if user would not
