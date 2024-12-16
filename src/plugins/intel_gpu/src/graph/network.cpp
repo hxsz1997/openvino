@@ -754,7 +754,7 @@ void network::execute_impl(const std::vector<event::ptr>& events) {
         auto prim_id = inst->id();
         std::cout << "Executing primitive ID: " << prim_id << std::endl;
 
-        auto start_time = std::chrono::high_resolution_clock::now();      
+        auto start_time = std::chrono::high_resolution_clock::now();
 
         inst->prepare_primitive();
         inst->execute();
